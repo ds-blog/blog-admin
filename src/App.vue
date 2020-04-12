@@ -11,12 +11,12 @@ import Layout from './views/Layout';
 export default {
   name: 'App',
   components: { Layout },
-  comments: {
-    Layout,
-  },
 };
 </script>
 <style lang="scss">
+body {
+    margin: 0;
+  }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
