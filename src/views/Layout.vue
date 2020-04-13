@@ -1,9 +1,9 @@
 <template>
   <el-container>
     <el-header>
-      <el-row :gutter="20">
+      <el-row :gutter="20" style="margin: 0">
         <el-col :span="8" class="header-left">
-          <div class="site-name" :style="{'width' : isCollapse ? '64px' : '200px'}">
+          <div class="site-name" :style="{'width' : isCollapse ? '44px' : '180px'}">
             <span>Blog</span>
             <span v-if="!isCollapse">Dashboard</span>
           </div>
@@ -29,7 +29,10 @@
         <Aside :collapse="isCollapse"/>
       </div>
       <el-main>
-
+        <Breadcrumb :list="breadcrumbList"/>
+        <div class="main-container">
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -37,13 +40,20 @@
 
 <script>
 import Aside from '../components/Aside';
+import Breadcrumb from '../components/Breadcrumb';
+
 export default {
   name: 'Layout',
-  components: { Aside },
+  components: { Aside, Breadcrumb, },
   data() {
     return {
       isCollapse: false
     };
+  },
+  computed: {
+    breadcrumbList() {
+      return this.$route.matched
+    }
   },
   methods:{
     handleCollapse() {
@@ -55,7 +65,7 @@ export default {
 
 <style scoped lang="scss">
   .el-header {
-    background-color: $--color-primary;
+    background-color: $--color-white;
     padding: 0;
     .el-row {
       height: inherit;
@@ -64,8 +74,10 @@ export default {
           font-size: 25px;
         }
         .site-name {
-          span:last-child {
-            margin-left: 10px;
+          padding: 0 10px;
+          text-align: left;
+          span:first-child {
+            margin-right: 10px;
           }
           transition: width 0.4s;
         }
@@ -82,7 +94,14 @@ export default {
     flex-basis: auto;
   }
   .el-main {
-    background-color: $--background-color-base;
+    background: #f0f2f5;
+    color: rgba(0, 0, 0, 0.65);
+    padding: 0;
+    .main-container {
+      margin: 20px 0 0 20px;
+      background-color: $--color-white;
+      height: calc(100% - 78px);
+    }
   }
   .user-info {
     padding: 0 20px;

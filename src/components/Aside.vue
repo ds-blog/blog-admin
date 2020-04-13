@@ -89,7 +89,7 @@
 
 <style scoped lang="scss">
   .el-menu-vertical-demo {
-    height: 100vh;
+    height: calc(100vh - 60px);
     text-align: left;
     &:not(.el-menu--collapse) {
       width: 200px;
