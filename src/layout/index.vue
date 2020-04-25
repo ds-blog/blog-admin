@@ -18,7 +18,7 @@
           </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-plus">个人信息</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus">退出登录</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus" @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -61,6 +61,11 @@ export default {
   methods:{
     handleCollapse() {
       this.isCollapse = !this.isCollapse
+    },
+    // 退出登录
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      await this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 };

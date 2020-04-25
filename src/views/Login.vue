@@ -1,11 +1,18 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" ref="loginForm" label-position="left" label-width="80px" :rules="rules" :model="loginForm">
+    <el-form
+      ref="loginForm"
+      class="login-form"
+      label-position="left"
+      label-width="80px"
+      :rules="rules"
+      :model="loginForm"
+    >
       <el-form-item label="用户名" prop="userName">
-        <el-input v-model="loginForm.userName"></el-input>
+        <el-input v-model="loginForm.userName" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="loginForm.password"></el-input>
+        <el-input v-model="loginForm.password" type="password" />
       </el-form-item>
       <el-form-item class="login-btn">
         <el-button type="primary" @click="submitForm">登录</el-button>
@@ -15,48 +22,48 @@
 </template>
 
 <script>
-  export default {
-    name: 'Login',
-    data() {
-      return {
-        loading: false,
-        loginForm: {
-          userName: '',
-          password: ''
-        },
-        redirect: undefined,
-        otherQuery: {},
-        rules: {
-          userName: [
-            { required: true, message: '请输入用户名', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
-          ]
-        }
-      }
-    },
-    methods: {
-      submitForm() {
-        this.$refs['loginForm'].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm)
-              .then(() => {
-                this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                this.loading = false
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+export default {
+  name: 'Login',
+  data() {
+    return {
+      loading: false,
+      loginForm: {
+        userName: '',
+        password: ''
       },
+      redirect: undefined,
+      otherQuery: {},
+      rules: {
+        userName: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      }
     }
-  };
+  },
+  methods: {
+    submitForm() {
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
