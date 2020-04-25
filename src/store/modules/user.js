@@ -1,6 +1,8 @@
-import { login } from '@/api/user'
+import { login, logout } from '@/api/user'
+import { getToken, setToken, removeToken } from '@/utils/auth'
+
 const state = {
-  token: '',
+  token: getToken(),
   name: '',
   avatar: '',
   introduction: '',
@@ -8,9 +10,7 @@ const state = {
 }
 
 const getters = {
-  getUserInfo: (state, getters, rootState) => {
-    return null
-  },
+  // getUserInfo: (state, getters, rootState) => null,
 }
 
 const mutations = {
@@ -36,20 +36,43 @@ const actions = {
   login({ commit, state, rootState }, userInfo) {
     const { userName, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userName: userName.trim(), password: password }).then(response => {
+      login({ userName: userName.trim(), password }).then((response) => {
         const { data } = response
         console.log(response)
         commit('SET_NAME', data.userName)
         commit('SET_AVATAR', data.avatar)
-        // setToken(data.token)
+        commit('SET_TOKEN', data.token)
+        setToken(data.token)
         resolve()
-      }).catch(error => {
+      }).catch((error) => {
         reject(error)
       })
     })
   },
+  // user logout
+  logout({ commit, state, dispatch }) {
+    return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        removeToken()
+        // resetRouter()
+        resolve()
+      }).catch((error) => {
+        reject(error)
+      })
+    })
+  },
+  // remove token
+  resetToken({ commit }) {
+    return new Promise((resolve) => {
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
+      resolve()
+    })
+  }
 }
-
 
 export default {
   namespaced: true,
