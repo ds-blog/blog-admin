@@ -4,6 +4,19 @@ function resolve (dir) {
 }
 module.exports = {
   lintOnSave: true,
+  devServer: {
+    host: '127.0.0.1',
+    port: '8081',
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8082',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+    }
+  },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...

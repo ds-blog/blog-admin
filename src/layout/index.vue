@@ -31,7 +31,7 @@
       <el-main>
         <Breadcrumb :list="breadcrumbList"/>
         <div class="main-container">
-          <router-view></router-view>
+          <router-view :key="key"></router-view>
         </div>
       </el-main>
     </el-container>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Aside from '../components/Aside';
+import Aside from './components/Aside';
 import Breadcrumb from '../components/Breadcrumb';
 
 export default {
@@ -53,6 +53,9 @@ export default {
   computed: {
     breadcrumbList() {
       return this.$route.matched
+    },
+    key() {
+      return this.$route.path
     }
   },
   methods:{
