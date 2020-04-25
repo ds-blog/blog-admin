@@ -1,20 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Layout from '../views/Layout';
+import Layout from '../layout/index';
+import Login from '../views/Login';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Layout',
-    redirect: '/dashboard',
-    component: Layout,
+    path: '/login',
+    name: '登录页',
+    component: Login,
   },
   {
-    path: '/dashboard',
-    name: '导航页',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
+    path: '/',
+    redirect: '/dashboard',
+    component: Layout,
+    children: [
+      {
+        path: '/dashboard',
+        name: '导航页',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+      }
+    ]
   },
 ];
 

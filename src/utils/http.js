@@ -11,7 +11,7 @@ const http = axios.create({
 
 // 环境的切换
 if (process.env.NODE_ENV === 'development') {
-  http.defaults.baseURL = '/proxyApi'
+  http.defaults.baseURL = '/api'
 } else if (process.env.NODE_ENV === 'production') {
   http.defaults.baseURL = 'http://prod.xxx.com'
 }
@@ -23,7 +23,7 @@ http.interceptors.request.use(
     NProgress.start()
     // 每次发送请求之前判断是否存在token
     // 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况，此处token一般是用户完成登录后储存到localstorage里的
-    token && (config.headers.Authorization = token)
+    // token && (config.headers.Authorization = token)
     return config
   },
   error => {
@@ -31,17 +31,18 @@ http.interceptors.request.use(
   })
 // 响应拦截器
 http.interceptors.response.use(response => {
-  // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
-  // 否则的话抛出错误
+  console.log('response', response)
   if (response.status === 200) {
+    // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     if (response.data.code === 511) {
       // 未授权调取授权接口
     } else if (response.data.code === 510) {
       // 未登录跳转登录页
     } else {
-      return Promise.resolve(response)
+      return Promise.resolve(response.data)
     }
   } else {
+    // 否则的话抛出错误
     NProgress.done()
     return Promise.reject(response)
   }
